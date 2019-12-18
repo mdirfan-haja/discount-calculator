@@ -6,10 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 
 <body>
+    <div id="app">
+        <h1>Discount Calculator</h1>
+        <p>Orginal Price</p>
+        <input v-model="orginalPrice" type="text">
+
+        <p>Discount Percentage</p>
+        <input v-model="discountpercentage" type="text">
+        <button v-on:click="calculateDiscount" type="button">Click discount</button>
+        <p> your discount is. {{result}}</p>
+        <p> (Auto calculate) your discount is. {{autocalcutor}}</p>
+    </div>
 
 </body>
+<script src="index.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            orginalPrice: 0,
+            discountpercentage: 0,
+            result: 0
+        },
+        methods: {
+            calculateDiscount: function() {
+                var discountprice;
+                var discount = this.discountpercentage;
+                discountprice = (this.orginalPrice / 100) * discount;
+                this.result = this.orginalPrice - discountprice;
+            }
+        },
+
+        computed: {
+            autocalcutor: function() {
+                var discountprice;
+                var discount = this.discountpercentage;
+                discountprice = (this.orginalPrice / 100) * discount;
+                return this.orginalPrice - discountprice;
+            }
+        }
+
+    })
+</script>
 
 </html>
