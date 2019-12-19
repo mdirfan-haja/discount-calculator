@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <h1>Discount Calculator</h1>
+        <p>Orginal Price</p>
+        <input v-model="price" type="text">
+
+        <p>Discount Percentage</p>
+        <input v-model="discountpercentage" type="text">
+
+        <p>Quantity</p>
+        <input v-model="quantity" type="text">
+
+        <button v-on:click="retailcal" type="button">Click discount</button>
+        <p> your discount is. {{checkout}}</p>
+        <p> (Auto calculate) your discount is. {{autocalcutor}}</p>
+    </div>
+
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            price: 0,
+            discountpercentage: 0,
+            quantity: 1,
+            checkout: 0
+        },
+        methods: {
+            retailcal: function() {
+                var productprice;
+                var discountoffer;
+                var product = this.quantity;
+                var discountprice
+                discountoffer = this.discountpercentage;
+                productprice = (this.price) * product;
+                discountprice = (productprice / 100) * discountoffer;
+
+                this.checkout = (productprice - discountprice).toFixed(2);
+
+            }
+        },
+
+        computed: {
+            autocalcutor: function() {
+                var productprice;
+                var discountoffer;
+                var product = this.quantity;
+                var discountprice
+                discountoffer = this.discountpercentage;
+                productprice = (this.price) * product;
+                discountprice = (productprice / 100) * discountoffer;
+
+                return this.checkout = (productprice - discountprice).toFixed(2);
+
+            }
+        }
+
+    })
+</script>
+
+</html>
