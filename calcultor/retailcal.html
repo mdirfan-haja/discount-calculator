@@ -33,7 +33,7 @@
 
         <ol>
             <li v-for="basket in baskets">
-                <input v-model="basket.price" type="text"> {{ basket.description }} - £{{ basket.price * basket.quantity }}
+                {{ basket.description }} - £{{ calcDiscounts(basket.price, basket.quantity, basket.discountpercentage) }}
             </li>
         </ol>
     </div>
@@ -52,12 +52,13 @@
             baskets: [{
                 description: 'chocolate',
                 quantity: 1,
-                price: 20
+                price: 20,
+                discountpercentage: 0
             }, {
                 description: 'Drink coco',
                 quantity: 3,
-                price: 20
-
+                price: 20,
+                discountpercentage: 0
             }]
         },
         methods: {
@@ -71,12 +72,22 @@
                 discountprice = (productprice / 100) * discountoffer;
                 this.checkout = (productprice - discountprice).toFixed(2);
             },
+            calcDiscounts: function(price, quantity, discountpercentage) {
+                var productprice = price * quantity;
+
+                var discountprice = (productprice / 100) * discountpercentage;
+                return (productprice - discountprice).toFixed(2);
+
+            },
+
+
             additem: function() {
                 var self = this;
                 self.baskets.push({
                     description: self.description,
                     quantity: self.quantity,
-                    price: self.price
+                    price: self.price,
+                    discountpercentage: self.discountpercentage
 
                 })
             }
@@ -86,27 +97,20 @@
                 var productprice;
                 var discountoffer;
                 var product = this.quantity;
-                var discountprice
+                var discountprice;
                 discountoffer = this.discountpercentage;
                 productprice = (this.price) * product;
                 discountprice = (productprice / 100) * discountoffer;
-
-                return this.checkout = (productprice - discountprice).toFixed(2);
-
+                return (productprice - discountprice).toFixed(2);
             },
 
             totalcost: function() {
                 var self = this;
-
                 var overalltotalprice = 0;
-
                 for (let index = 0; index < self.baskets.length; index++) {
                     var item = self.baskets[index];
                     var total = item.price * item.quantity;
-
                     overalltotalprice += total;
-
-
                 }
 
                 return overalltotalprice;
