@@ -14,6 +14,8 @@
 
     <div id="app">
         <h1>Discount Calculator</h1>
+        <p>Item name</p>
+        <input v-model="description" type="text">
         <p>Orginal Price</p>
         <input v-model="price" type="text">
 
@@ -24,8 +26,16 @@
         <input v-model="quantity" type="text">
 
         <button v-on:click="retailcal" type="button">Click discount</button>
+        <button v-on:click="additem" type="button">Add items</button>
         <p> your discount is. {{checkout}}</p>
         <p> (Auto calculate) your discount is. {{autocalcutor}}</p>
+        <p> Total cost is. {{totalcost}}</p>
+
+        <ol>
+            <li v-for="basket in baskets">
+                <input v-model="basket.price" type="text"> {{ basket.description }} - £{{ basket.price * basket.quantity }}
+            </li>
+        </ol>
     </div>
 
 </body>
@@ -37,23 +47,40 @@
             price: 0,
             discountpercentage: 0,
             quantity: 1,
-            checkout: 0
+            checkout: 0,
+            description: null,
+            baskets: [{
+                description: 'chocolate',
+                quantity: 1,
+                price: 20
+            }, {
+                description: 'Drink coco',
+                quantity: 3,
+                price: 20
+
+            }]
         },
         methods: {
             retailcal: function() {
                 var productprice;
                 var discountoffer;
                 var product = this.quantity;
-                var discountprice
+                var discountprice;
                 discountoffer = this.discountpercentage;
                 productprice = (this.price) * product;
                 discountprice = (productprice / 100) * discountoffer;
-
                 this.checkout = (productprice - discountprice).toFixed(2);
+            },
+            additem: function() {
+                var self = this;
+                self.baskets.push({
+                    description: self.description,
+                    quantity: self.quantity,
+                    price: self.price
 
+                })
             }
         },
-
         computed: {
             autocalcutor: function() {
                 var productprice;
@@ -66,8 +93,27 @@
 
                 return this.checkout = (productprice - discountprice).toFixed(2);
 
+            },
+
+            totalcost: function() {
+                var self = this;
+
+                var overalltotalprice = 0;
+
+                for (let index = 0; index < self.baskets.length; index++) {
+                    var item = self.baskets[index];
+                    var total = item.price * item.quantity;
+
+                    overalltotalprice += total;
+
+
+                }
+
+                return overalltotalprice;
+
             }
         }
+
 
     })
 </script>
